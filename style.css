@@ -1,0 +1,622 @@
+/* ===================================
+   General Styles
+   =================================== */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    font-family: 'Cairo', 'Tajawal', sans-serif;
+    background-color: #f8f9fa;
+    color: #333;
+    direction: rtl;
+}
+
+body {
+    padding-top: 0;
+}
+
+/* ===================================
+   Navigation Bar
+   =================================== */
+
+.navbar {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    background: linear-gradient(135deg, #0d6efd 0%, #0a58ca 100%);
+}
+
+.navbar-brand {
+    font-size: 1.5rem;
+    letter-spacing: 0.5px;
+}
+
+.navbar-brand i {
+    margin-left: 8px;
+}
+
+.nav-link {
+    transition: all 0.3s ease;
+    font-weight: 500;
+    margin: 0 5px;
+}
+
+.nav-link:hover {
+    color: #fff !important;
+    transform: translateY(-2px);
+}
+
+/* ===================================
+   Page Title
+   =================================== */
+
+.page-title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #0d6efd;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.page-title i {
+    font-size: 2.2rem;
+}
+
+/* ===================================
+   Statistics Cards
+   =================================== */
+
+.stat-card {
+    background: white;
+    border-radius: 12px;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+    border: 1px solid #e9ecef;
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.12);
+}
+
+.stat-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.8rem;
+}
+
+.stat-icon.bg-primary {
+    background: linear-gradient(135deg, #0d6efd 0%, #0a58ca 100%);
+}
+
+.stat-icon.bg-success {
+    background: linear-gradient(135deg, #198754 0%, #146c43 100%);
+}
+
+.stat-icon.bg-warning {
+    background: linear-gradient(135deg, #ffc107 0%, #ffb300 100%);
+}
+
+.stat-icon.bg-info {
+    background: linear-gradient(135deg, #0dcaf0 0%, #0aa2c0 100%);
+}
+
+.stat-icon.bg-danger {
+    background: linear-gradient(135deg, #dc3545 0%, #bb2d3b 100%);
+}
+
+.stat-content {
+    flex: 1;
+}
+
+.stat-label {
+    color: #6c757d;
+    font-size: 0.9rem;
+    font-weight: 500;
+    margin-bottom: 5px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.stat-value {
+    color: #0d6efd;
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin: 0;
+}
+
+/* ===================================
+   Buttons
+   =================================== */
+
+.btn {
+    border-radius: 8px;
+    font-weight: 600;
+    padding: 10px 20px;
+    transition: all 0.3s ease;
+    border: none;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #0d6efd 0%, #0a58ca 100%);
+}
+
+.btn-primary:hover {
+    background: linear-gradient(135deg, #0a58ca 0%, #084298 100%);
+    color: white;
+}
+
+.btn-success {
+    background: linear-gradient(135deg, #198754 0%, #146c43 100%);
+}
+
+.btn-success:hover {
+    background: linear-gradient(135deg, #146c43 0%, #0d3818 100%);
+    color: white;
+}
+
+.btn-danger {
+    background: linear-gradient(135deg, #dc3545 0%, #bb2d3b 100%);
+}
+
+.btn-danger:hover {
+    background: linear-gradient(135deg, #bb2d3b 0%, #842029 100%);
+    color: white;
+}
+
+.btn-warning {
+    background: linear-gradient(135deg, #ffc107 0%, #ffb300 100%);
+    color: #000;
+}
+
+.btn-warning:hover {
+    background: linear-gradient(135deg, #ffb300 0%, #ff9800 100%);
+    color: #000;
+}
+
+.btn-info {
+    background: linear-gradient(135deg, #0dcaf0 0%, #0aa2c0 100%);
+}
+
+.btn-info:hover {
+    background: linear-gradient(135deg, #0aa2c0 0%, #087990 100%);
+    color: white;
+}
+
+.btn-secondary {
+    background: linear-gradient(135deg, #6c757d 0%, #5a6268 100%);
+}
+
+.btn-secondary:hover {
+    background: linear-gradient(135deg, #5a6268 0%, #4e555b 100%);
+    color: white;
+}
+
+.btn-lg {
+    padding: 15px 20px;
+    font-size: 1.05rem;
+}
+
+.btn i {
+    margin-left: 8px;
+}
+
+/* ===================================
+   Forms
+   =================================== */
+
+.form-control, .form-select {
+    border-radius: 8px;
+    border: 1px solid #dee2e6;
+    padding: 10px 15px;
+    font-family: 'Cairo', 'Tajawal', sans-serif;
+    transition: all 0.3s ease;
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: #0d6efd;
+    box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+}
+
+.form-label {
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 8px;
+}
+
+/* ===================================
+   Cards
+   =================================== */
+
+.card {
+    border: 1px solid #e9ecef;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.card-header {
+    border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+    padding: 1.5rem;
+}
+
+.card-body {
+    padding: 1.5rem;
+}
+
+.card-header h5 {
+    margin: 0;
+    font-weight: 700;
+}
+
+/* ===================================
+   Tables
+   =================================== */
+
+.table {
+    margin-bottom: 0;
+}
+
+.table thead th {
+    background-color: #212529;
+    color: white;
+    font-weight: 600;
+    border: none;
+    padding: 15px;
+    text-align: right;
+}
+
+.table tbody tr {
+    transition: all 0.3s ease;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.table tbody tr:hover {
+    background-color: #f8f9fa;
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.05);
+}
+
+.table td {
+    padding: 15px;
+    vertical-align: middle;
+}
+
+/* ===================================
+   Modal
+   =================================== */
+
+.modal-content {
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+}
+
+.modal-header {
+    border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+    padding: 1.5rem;
+}
+
+.modal-body {
+    padding: 1.5rem;
+}
+
+.modal-footer {
+    border-top: 1px solid #e9ecef;
+    padding: 1.5rem;
+}
+
+.modal-title {
+    font-weight: 700;
+    font-size: 1.3rem;
+}
+
+/* ===================================
+   Badges & Status
+   =================================== */
+
+.badge {
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 0.85rem;
+}
+
+.badge-rented {
+    background-color: #d1e7dd;
+    color: #0f5132;
+}
+
+.badge-vacant {
+    background-color: #f8d7da;
+    color: #842029;
+}
+
+/* ===================================
+   Action Buttons
+   =================================== */
+
+.action-btn {
+    padding: 6px 10px;
+    font-size: 0.85rem;
+    margin: 0 3px;
+    border-radius: 6px;
+}
+
+.action-btn i {
+    margin-left: 4px;
+}
+
+/* ===================================
+   Report Section
+   =================================== */
+
+.report-card {
+    background: white;
+    border: 1px solid #e9ecef;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.report-header {
+    border-bottom: 2px solid #0d6efd;
+    padding-bottom: 15px;
+    margin-bottom: 15px;
+}
+
+.report-title {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: #0d6efd;
+}
+
+.report-subtitle {
+    color: #6c757d;
+    font-size: 0.95rem;
+}
+
+.report-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 15px;
+}
+
+.report-table th {
+    background-color: #f8f9fa;
+    padding: 12px;
+    text-align: right;
+    font-weight: 600;
+    border-bottom: 2px solid #dee2e6;
+}
+
+.report-table td {
+    padding: 12px;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.report-table tr:last-child td {
+    border-bottom: none;
+}
+
+.report-summary {
+    background-color: #f8f9fa;
+    padding: 15px;
+    border-radius: 8px;
+    margin-top: 15px;
+}
+
+.report-summary-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.report-summary-item:last-child {
+    border-bottom: none;
+}
+
+.report-summary-label {
+    font-weight: 600;
+    color: #333;
+}
+
+.report-summary-value {
+    color: #0d6efd;
+    font-weight: 700;
+}
+
+/* ===================================
+   Page Content
+   =================================== */
+
+.page-content {
+    animation: fadeIn 0.3s ease-in;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ===================================
+   Responsive Design
+   =================================== */
+
+@media (max-width: 768px) {
+    .page-title {
+        font-size: 1.5rem;
+    }
+
+    .stat-card {
+        margin-bottom: 15px;
+    }
+
+    .table {
+        font-size: 0.9rem;
+    }
+
+    .table th, .table td {
+        padding: 10px;
+    }
+
+    .btn-lg {
+        padding: 12px 15px;
+        font-size: 0.95rem;
+    }
+
+    .navbar-brand {
+        font-size: 1.2rem;
+    }
+
+    .modal-dialog {
+        margin: 10px;
+    }
+}
+
+@media (max-width: 576px) {
+    .page-title {
+        font-size: 1.3rem;
+    }
+
+    .stat-card {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .stat-icon {
+        width: 50px;
+        height: 50px;
+        font-size: 1.5rem;
+    }
+
+    .table {
+        font-size: 0.85rem;
+    }
+
+    .btn {
+        padding: 8px 12px;
+        font-size: 0.9rem;
+    }
+
+    .btn-lg {
+        padding: 10px 12px;
+        font-size: 0.85rem;
+    }
+
+    .action-btn {
+        padding: 4px 8px;
+        font-size: 0.75rem;
+    }
+}
+
+/* ===================================
+   Print Styles
+   =================================== */
+
+@media print {
+    .navbar, .btn, .action-btn, #reportMonth {
+        display: none;
+    }
+
+    .report-card {
+        page-break-inside: avoid;
+        box-shadow: none;
+        border: 1px solid #ccc;
+    }
+
+    body {
+        background-color: white;
+    }
+}
+
+/* ===================================
+   Utility Classes
+   =================================== */
+
+.text-center {
+    text-align: center;
+}
+
+.text-muted {
+    color: #6c757d;
+}
+
+.mb-2 {
+    margin-bottom: 0.5rem;
+}
+
+.mb-3 {
+    margin-bottom: 1rem;
+}
+
+.mb-4 {
+    margin-bottom: 1.5rem;
+}
+
+.mt-3 {
+    margin-top: 1rem;
+}
+
+.mt-4 {
+    margin-top: 1.5rem;
+}
+
+.py-4 {
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
+}
+
+.w-100 {
+    width: 100%;
+}
+
+.gap-2 {
+    gap: 0.5rem;
+}
+
+/* ===================================
+   Scrollbar Styling
+   =================================== */
+
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #0d6efd;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #0a58ca;
+}

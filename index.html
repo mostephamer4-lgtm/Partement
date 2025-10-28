@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نظام إدارة العقارات الذكي</title>
+    
+    <!-- Bootstrap 5 RTL -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts - Arabic -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary sticky-top">
+        <div class="container-fluid">
+            <a class="navbar-brand fw-bold" href="#dashboard">
+                <i class="fas fa-building"></i> نظام إدارة العقارات
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" onclick="showPage('dashboard')">
+                            <i class="fas fa-chart-line"></i> لوحة التحكم
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" onclick="showPage('properties')">
+                            <i class="fas fa-home"></i> العقارات
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" onclick="showPage('expenses')">
+                            <i class="fas fa-receipt"></i> المصاريف
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" onclick="showPage('reports')">
+                            <i class="fas fa-file-pdf"></i> التقارير
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" onclick="showPage('settings')">
+                            <i class="fas fa-cog"></i> الإعدادات
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Container -->
+    <div class="container-fluid py-4">
+        <!-- Dashboard Page -->
+        <div id="dashboard" class="page-content">
+            <div class="row mb-4">
+                <div class="col-12">
+                    <h1 class="page-title">
+                        <i class="fas fa-chart-line"></i> لوحة التحكم
+                    </h1>
+                </div>
+            </div>
+
+            <!-- Statistics Cards -->
+            <div class="row mb-4">
+                <div class="col-md-6 col-lg-3 mb-3">
+                    <div class="stat-card">
+                        <div class="stat-icon bg-primary">
+                            <i class="fas fa-building"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h6 class="stat-label">إجمالي العقارات</h6>
+                            <h3 class="stat-value" id="totalProperties">0</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3 mb-3">
+                    <div class="stat-card">
+                        <div class="stat-icon bg-success">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h6 class="stat-label">عقارات مؤجرة</h6>
+                            <h3 class="stat-value" id="rentedProperties">0</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3 mb-3">
+                    <div class="stat-card">
+                        <div class="stat-icon bg-warning">
+                            <i class="fas fa-times-circle"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h6 class="stat-label">عقارات شاغرة</h6>
+                            <h3 class="stat-value" id="vacantProperties">0</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3 mb-3">
+                    <div class="stat-card">
+                        <div class="stat-icon bg-info">
+                            <i class="fas fa-wallet"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h6 class="stat-label">إجمالي الدخل الشهري</h6>
+                            <h3 class="stat-value" id="monthlyIncome">0 ر.س</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- More Statistics -->
+            <div class="row mb-4">
+                <div class="col-md-6 col-lg-3 mb-3">
+                    <div class="stat-card">
+                        <div class="stat-icon bg-danger">
+                            <i class="fas fa-money-bill-wave"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h6 class="stat-label">إجمالي المصاريف</h6>
+                            <h3 class="stat-value" id="totalExpenses">0 ر.س</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3 mb-3">
+                    <div class="stat-card">
+                        <div class="stat-icon bg-success">
+                            <i class="fas fa-chart-pie"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h6 class="stat-label">صافي الأرباح</h6>
+                            <h3 class="stat-value" id="netProfit">0 ر.س</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="row">
+                <div class="col-12">
+                    <h5 class="mb-3">الإجراءات السريعة</h5>
+                </div>
+                <div class="col-md-6 col-lg-3 mb-3">
+                    <button class="btn btn-primary btn-lg w-100" onclick="showPage('properties'); showAddPropertyModal()">
+                        <i class="fas fa-plus"></i> إضافة عقار جديد
+                    </button>
+                </div>
+                <div class="col-md-6 col-lg-3 mb-3">
+                    <button class="btn btn-warning btn-lg w-100" onclick="showPage('expenses')">
+                        <i class="fas fa-receipt"></i> تسجيل مصاريف
+                    </button>
+                </div>
+                <div class="col-md-6 col-lg-3 mb-3">
+                    <button class="btn btn-info btn-lg w-100" onclick="showPage('reports')">
+                        <i class="fas fa-file-pdf"></i> عرض التقارير
+                    </button>
+                </div>
+                <div class="col-md-6 col-lg-3 mb-3">
+                    <button class="btn btn-secondary btn-lg w-100" onclick="exportAllData()">
+                        <i class="fas fa-download"></i> نسخ احتياطي
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Properties Page -->
+        <div id="properties" class="page-content" style="display: none;">
+            <div class="row mb-4">
+                <div class="col-12 d-flex justify-content-between align-items-center">
+                    <h1 class="page-title">
+                        <i class="fas fa-home"></i> إدارة العقارات
+                    </h1>
+                    <button class="btn btn-primary" onclick="showAddPropertyModal()">
+                        <i class="fas fa-plus"></i> إضافة عقار جديد
+                    </button>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-12">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th>اسم العقار</th>
+                                    <th>المستأجر</th>
+                                    <th>الإيجار الشهري</th>
+                                    <th>الحالة</th>
+                                    <th>تاريخ التأجير</th>
+                                    <th>الإجراءات</th>
+                                </tr>
+                            </thead>
+                            <tbody id="propertiesTable">
+                                <tr>
+                                    <td colspan="6" class="text-center text-muted py-4">
+                                        لا توجد عقارات مسجلة حتى الآن
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Expenses Page -->
+        <div id="expenses" class="page-content" style="display: none;">
+            <div class="row mb-4">
+                <div class="col-12">
+                    <h1 class="page-title">
+                        <i class="fas fa-receipt"></i> تسجيل المصاريف
+                    </h1>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="card shadow-sm">
+                        <div class="card-header bg-primary text-white">
+                            <h5 class="mb-0">إضافة مصاريف جديدة</h5>
+                        </div>
+                        <div class="card-body">
+                            <form id="expenseForm">
+                                <div class="mb-3">
+                                    <label for="expenseProperty" class="form-label">اختر العقار</label>
+                                    <select class="form-select" id="expenseProperty" required>
+                                        <option value="">-- اختر عقاراً --</option>
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="expenseMonth" class="form-label">الشهر والسنة</label>
+                                    <input type="month" class="form-control" id="expenseMonth" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="electricityBill" class="form-label">فاتورة الكهرباء (ر.س)</label>
+                                    <input type="number" class="form-control" id="electricityBill" min="0" step="0.01" value="0">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="waterBill" class="form-label">فاتورة الماء (ر.س)</label>
+                                    <input type="number" class="form-control" id="waterBill" min="0" step="0.01" value="0">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="otherExpenses" class="form-label">مصاريف إضافية (ر.س)</label>
+                                    <input type="number" class="form-control" id="otherExpenses" min="0" step="0.01" value="0">
+                                </div>
+                                <button type="submit" class="btn btn-success w-100">
+                                    <i class="fas fa-save"></i> حفظ المصاريف
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-6">
+                    <div class="card shadow-sm">
+                        <div class="card-header bg-info text-white">
+                            <h5 class="mb-0">سجل المصاريف</h5>
+                        </div>
+                        <div class="card-body">
+                            <div id="expensesList"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Reports Page -->
+        <div id="reports" class="page-content" style="display: none;">
+            <div class="row mb-4">
+                <div class="col-12">
+                    <h1 class="page-title">
+                        <i class="fas fa-file-pdf"></i> التقارير الشهرية
+                    </h1>
+                </div>
+            </div>
+
+            <div class="row mb-4">
+                <div class="col-md-6">
+                    <label for="reportMonth" class="form-label">اختر الشهر والسنة</label>
+                    <input type="month" class="form-control" id="reportMonth">
+                </div>
+                <div class="col-md-6 d-flex align-items-end">
+                    <button class="btn btn-primary w-100" onclick="loadMonthlyReport()">
+                        <i class="fas fa-search"></i> عرض التقرير
+                    </button>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-12">
+                    <div id="reportContent"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Settings Page -->
+        <div id="settings" class="page-content" style="display: none;">
+            <div class="row mb-4">
+                <div class="col-12">
+                    <h1 class="page-title">
+                        <i class="fas fa-cog"></i> الإعدادات
+                    </h1>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="card shadow-sm">
+                        <div class="card-header bg-primary text-white">
+                            <h5 class="mb-0">إعدادات النظام</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="mb-3">
+                                <label for="currency" class="form-label">العملة</label>
+                                <input type="text" class="form-control" id="currency" value="ر.س" placeholder="ر.س">
+                            </div>
+                            <div class="mb-3">
+                                <label for="businessName" class="form-label">اسم المشروع/الشركة</label>
+                                <input type="text" class="form-control" id="businessName" placeholder="نظام إدارة العقارات الذكي">
+                            </div>
+                            <button class="btn btn-success w-100" onclick="saveSettings()">
+                                <i class="fas fa-save"></i> حفظ الإعدادات
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-6">
+                    <div class="card shadow-sm">
+                        <div class="card-header bg-danger text-white">
+                            <h5 class="mb-0">البيانات والنسخ الاحتياطي</h5>
+                        </div>
+                        <div class="card-body">
+                            <button class="btn btn-info w-100 mb-2" onclick="exportAllData()">
+                                <i class="fas fa-download"></i> تصدير جميع البيانات (JSON)
+                            </button>
+                            <button class="btn btn-warning w-100 mb-2" onclick="importData()">
+                                <i class="fas fa-upload"></i> استيراد البيانات
+                            </button>
+                            <button class="btn btn-danger w-100" onclick="clearAllData()">
+                                <i class="fas fa-trash"></i> حذف جميع البيانات
+                            </button>
+                            <input type="file" id="importFile" style="display: none;" accept=".json" onchange="handleImportFile(event)">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add/Edit Property Modal -->
+    <div class="modal fade" id="propertyModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title" id="propertyModalTitle">إضافة عقار جديد</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="propertyForm">
+                        <div class="mb-3">
+                            <label for="propertyName" class="form-label">اسم العقار</label>
+                            <input type="text" class="form-control" id="propertyName" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="tenantName" class="form-label">اسم المستأجر</label>
+                            <input type="text" class="form-control" id="tenantName" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="monthlyRent" class="form-label">مبلغ الإيجار الشهري (ر.س)</label>
+                            <input type="number" class="form-control" id="monthlyRent" min="0" step="0.01" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="rentalDate" class="form-label">تاريخ التأجير</label>
+                            <input type="date" class="form-control" id="rentalDate" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="paymentDate" class="form-label">تاريخ الدفع الشهري</label>
+                            <input type="number" class="form-control" id="paymentDate" min="1" max="31" placeholder="مثال: 1 أو 15 أو 30" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="propertyStatus" class="form-label">حالة العقار</label>
+                            <select class="form-select" id="propertyStatus" required>
+                                <option value="rented">مؤجر</option>
+                                <option value="vacant">شاغر</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="propertyNotes" class="form-label">ملاحظات (اختياري)</label>
+                            <textarea class="form-control" id="propertyNotes" rows="3"></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
+                    <button type="button" class="btn btn-primary" onclick="saveProperty()">حفظ العقار</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- jsPDF for PDF generation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    
+    <!-- Main Script -->
+    <script src="script.js"></script>
+</body>
+</html>
