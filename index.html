@@ -285,11 +285,17 @@
             </div>
 
             <div class="row mb-4">
-                <div class="col-md-6">
+                <div class="col-md-4 mb-3">
+                    <label for="reportProperty" class="form-label">اختر العقار</label>
+                    <select class="form-select" id="reportProperty" required>
+                        <option value="">-- اختر عقاراً --</option>
+                    </select>
+                </div>
+                <div class="col-md-4 mb-3">
                     <label for="reportMonth" class="form-label">اختر الشهر والسنة</label>
                     <input type="month" class="form-control" id="reportMonth">
                 </div>
-                <div class="col-md-6 d-flex align-items-end">
+                <div class="col-md-4 d-flex align-items-end">
                     <button class="btn btn-primary w-100" onclick="loadMonthlyReport()">
                         <i class="fas fa-search"></i> عرض التقرير
                     </button>

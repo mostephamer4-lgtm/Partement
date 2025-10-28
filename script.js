@@ -108,7 +108,7 @@ class PropertyManager {
                 return sum + parseFloat(e.electricity || 0) + parseFloat(e.water || 0) + parseFloat(e.other || 0);
             }, 0);
 
-        const netProfit = monthlyIncome - monthlyExpenses;
+        const netProfit = monthlyIncome;
 
         return {
             totalProperties,
@@ -174,8 +174,19 @@ function showPage(pageName) {
             populateExpensePropertySelect();
         } else if (pageName === 'dashboard') {
             updateDashboard();
+        } else if (pageName === 'reports') {
+            populateReportPropertySelect();
         }
     }
+}
+
+// Populate report property select
+function populateReportPropertySelect() {
+    const properties = manager.getProperties();
+    const select = document.getElementById('reportProperty');
+    
+    select.innerHTML = '<option value="">-- اختر عقاراً --</option>' + 
+        properties.map(p => `<option value="${p.id}">${p.name}</option>`).join('');
 }
 
 // Update dashboard statistics
@@ -284,7 +295,7 @@ function loadProperties() {
                 <td>${property.tenant}</td>
                 <td>${property.monthlyRent.toFixed(2)} ${manager.settings.currency}</td>
                 <td>${statusBadge}</td>
-                <td>${new Date(property.rentalDate).toLocaleDateString('ar-SA')}</td>
+                <td>${new Date(property.rentalDate).toLocaleDateString('en-US')}</td>
                 <td>
                     <button class="btn btn-sm btn-info action-btn" onclick="showEditPropertyModal(${property.id})">
                         <i class="fas fa-edit"></i> تعديل
@@ -434,102 +445,106 @@ function deleteExpenseConfirm(id) {
 
 // Load monthly report
 function loadMonthlyReport() {
+    const propertyId = parseInt(document.getElementById('reportProperty').value);
     const month = document.getElementById('reportMonth').value;
     
-    if (!month) {
-        alert('يرجى اختيار الشهر والسنة');
-        return;
-    }
-
-    const properties = manager.getProperties();
     const reportContent = document.getElementById('reportContent');
 
-    if (properties.length === 0) {
-        reportContent.innerHTML = '<p class="text-center text-muted">لا توجد عقارات مسجلة</p>';
+    if (!propertyId || !month) {
+        reportContent.innerHTML = '<p class="text-center text-muted">يرجى اختيار العقار والشهر لعرض التقرير.</p>';
+        return;
+    }
+    
+    const property = manager.getPropertyById(propertyId);
+
+    if (!property) {
+        reportContent.innerHTML = '<p class="text-center text-muted">لم يتم العثور على العقار.</p>';
         return;
     }
 
-    let html = '';
+    const expenses = manager.getExpenses(propertyId, month);
+    const expense = expenses.length > 0 ? expenses[0] : { electricity: 0, water: 0, other: 0 };
+    
+    const totalExpenses = expense.electricity + expense.water + expense.other;
+    const netIncome = (property.status === 'rented' ? property.monthlyRent : 0); // Net income is just the rent, as expenses are on the tenant
+    const totalDue = netIncome + totalExpenses;
 
-    properties.forEach(property => {
-        const expenses = manager.getExpenses(property.propertyId || property.id, month);
-        const expense = expenses.length > 0 ? expenses[0] : { electricity: 0, water: 0, other: 0 };
-        
-        const totalExpenses = expense.electricity + expense.water + expense.other;
-        const netIncome = (property.status === 'rented' ? property.monthlyRent : 0) - totalExpenses;
+    const [year, monthNum] = month.split('-');
+    // Use 'en-US' locale for Gregorian month name
+    const monthName = new Date(year, monthNum - 1).toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
 
-        const [year, monthNum] = month.split('-');
-        const monthName = new Date(year, monthNum - 1).toLocaleDateString('ar-SA', { month: 'long', year: 'numeric' });
+    let html = `
+        <div class="report-card">
+            <div class="report-header">
+                <div class="report-title">تقرير الإيجار الشهري</div>
+                <div class="report-subtitle">العقار: ${property.name} | الشهر: ${monthName}</div>
+            </div>
 
-        html += `
-            <div class="report-card">
-                <div class="report-header">
-                    <div class="report-title">تقرير الإيجار الشهري</div>
-                    <div class="report-subtitle">العقار: ${property.name} | الشهر: ${monthName}</div>
+            <table class="report-table">
+                <tr>
+                    <th>البند</th>
+                    <th>القيمة</th>
+                </tr>
+                <tr>
+                    <td>اسم العقار</td>
+                    <td>${property.name}</td>
+                </tr>
+                <tr>
+                    <td>المستأجر</td>
+                    <td>${property.tenant}</td>
+                </tr>
+                <tr>
+                    <td>مبلغ الإيجار الشهري</td>
+                    <td>${property.monthlyRent.toFixed(2)} ${manager.settings.currency}</td>
+                </tr>
+                <tr>
+                    <td>تاريخ الدفع</td>
+                    <td>اليوم ${property.paymentDate} من كل شهر</td>
+                </tr>
+                <tr>
+                    <td>فاتورة الكهرباء</td>
+                    <td>${expense.electricity.toFixed(2)} ${manager.settings.currency}</td>
+                </tr>
+                <tr>
+                    <td>فاتورة الماء</td>
+                    <td>${expense.water.toFixed(2)} ${manager.settings.currency}</td>
+                </tr>
+                <tr>
+                    <td>مصاريف إضافية</td>
+                    <td>${expense.other.toFixed(2)} ${manager.settings.currency}</td>
+                </tr>
+                <tr style="background-color: #f8f9fa; font-weight: bold;">
+                    <td>صافي دخل المالك (الإيجار)</td>
+                    <td>${netIncome.toFixed(2)} ${manager.settings.currency}</td>
+                </tr>
+                <tr style="background-color: #e8f4f8; font-weight: bold;">
+                    <td>المبلغ الإجمالي المستحق (الإيجار + المصاريف)</td>
+                    <td>${totalDue.toFixed(2)} ${manager.settings.currency}</td>
+                </tr>
+            </table>
+
+            <div class="report-summary">
+                <div class="report-summary-item">
+                    <span class="report-summary-label">✅ حالة الدفع:</span>
+                    <span class="report-summary-value">تم الدفع كاملًا في تاريخه</span>
                 </div>
-
-                <table class="report-table">
-                    <tr>
-                        <th>البند</th>
-                        <th>القيمة</th>
-                    </tr>
-                    <tr>
-                        <td>اسم العقار</td>
-                        <td>${property.name}</td>
-                    </tr>
-                    <tr>
-                        <td>المستأجر</td>
-                        <td>${property.tenant}</td>
-                    </tr>
-                    <tr>
-                        <td>مبلغ الإيجار الشهري</td>
-                        <td>${property.monthlyRent.toFixed(2)} ${manager.settings.currency}</td>
-                    </tr>
-                    <tr>
-                        <td>تاريخ الدفع</td>
-                        <td>اليوم ${property.paymentDate} من كل شهر</td>
-                    </tr>
-                    <tr>
-                        <td>فاتورة الكهرباء</td>
-                        <td>${expense.electricity.toFixed(2)} ${manager.settings.currency}</td>
-                    </tr>
-                    <tr>
-                        <td>فاتورة الماء</td>
-                        <td>${expense.water.toFixed(2)} ${manager.settings.currency}</td>
-                    </tr>
-                    <tr>
-                        <td>مصاريف إضافية</td>
-                        <td>${expense.other.toFixed(2)} ${manager.settings.currency}</td>
-                    </tr>
-                    <tr style="background-color: #f8f9fa; font-weight: bold;">
-                        <td>صافي دخل المالك</td>
-                        <td>${netIncome.toFixed(2)} ${manager.settings.currency}</td>
-                    </tr>
-                </table>
-
-                <div class="report-summary">
-                    <div class="report-summary-item">
-                        <span class="report-summary-label">✅ حالة الدفع:</span>
-                        <span class="report-summary-value">تم الدفع كاملًا في تاريخه</span>
-                    </div>
-                    <div class="report-summary-item">
-                        <span class="report-summary-label">📅 تاريخ التقرير:</span>
-                        <span class="report-summary-value">${new Date().toLocaleDateString('ar-SA')}</span>
-                    </div>
-                    <div class="report-summary-item">
-                        <span class="report-summary-label">🏠 النظام:</span>
-                        <span class="report-summary-value">${manager.settings.businessName}</span>
-                    </div>
+                <div class="report-summary-item">
+                    <span class="report-summary-label">📅 تاريخ التقرير:</span>
+                    <span class="report-summary-value">${new Date().toLocaleDateString('en-US')}</span>
                 </div>
-
-                <div class="mt-3">
-                    <button class="btn btn-success" onclick="exportReportToPDF('${property.id}', '${month}', '${property.name}')">
-                        <i class="fas fa-file-pdf"></i> تصدير PDF
-                    </button>
+                <div class="report-summary-item">
+                    <span class="report-summary-label">🏠 النظام:</span>
+                    <span class="report-summary-value">${manager.settings.businessName}</span>
                 </div>
             </div>
-        `;
-    });
+
+            <div class="mt-3">
+                <button class="btn btn-success w-100" onclick="exportReportToPDF('${property.id}', '${month}', '${property.name}')">
+                    <i class="fas fa-file-pdf"></i> تصدير تقرير PDF
+                </button>
+            </div>
+        </div>
+    `;
 
     reportContent.innerHTML = html;
 }
@@ -548,7 +563,8 @@ function exportReportToPDF(propertyId, month, propertyName) {
     const expense = expenses.length > 0 ? expenses[0] : { electricity: 0, water: 0, other: 0 };
     
     const totalExpenses = expense.electricity + expense.water + expense.other;
-    const netIncome = (property.status === 'rented' ? property.monthlyRent : 0) - totalExpenses;
+    const netIncome = (property.status === 'rented' ? property.monthlyRent : 0); // Net income is just the rent, as expenses are on the tenant
+    const totalDue = netIncome + totalExpenses;
 
     const [year, monthNum] = month.split('-');
     const monthName = new Date(year, monthNum - 1).toLocaleDateString('ar-SA', { month: 'long', year: 'numeric' });
@@ -676,8 +692,12 @@ function exportReportToPDF(propertyId, month, propertyName) {
                         <td>${expense.other.toFixed(2)} ${manager.settings.currency}</td>
                     </tr>
                     <tr style="background-color: #e8f4f8; font-weight: bold;">
-                        <td>صافي دخل المالك</td>
+                        <td>صافي دخل المالك (الإيجار)</td>
                         <td>${netIncome.toFixed(2)} ${manager.settings.currency}</td>
+                    </tr>
+                    <tr style="background-color: #d1e7dd; font-weight: bold;">
+                        <td>المبلغ الإجمالي المستحق (الإيجار + المصاريف)</td>
+                        <td>${totalDue.toFixed(2)} ${manager.settings.currency}</td>
                     </tr>
                 </table>
 
@@ -688,7 +708,7 @@ function exportReportToPDF(propertyId, month, propertyName) {
                     </div>
                     <div class="summary-item">
                         <span class="summary-label">📅 تاريخ التقرير:</span>
-                        <span class="summary-value">${new Date().toLocaleDateString('ar-SA')}</span>
+                        <span class="summary-value">${new Date().toLocaleDateString('en-US')}</span>
                     </div>
                 </div>
             </div>
@@ -712,7 +732,11 @@ function exportReportToPDF(propertyId, month, propertyName) {
         jsPDF: { orientation: 'portrait', unit: 'mm', format: 'a4' }
     };
 
-    html2pdf().set(opt).from(element).save();
+    // Use outputPdf for better iOS compatibility
+    html2pdf().set(opt).from(element).outputPdf('datauristring').then(function (pdfAsString) {
+        // Open the PDF in a new window/tab for better iOS compatibility
+        window.open(pdfAsString);
+    });
 }
 
 // Load and display settings
